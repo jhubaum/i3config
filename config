@@ -11,6 +11,10 @@
 
 set $mod Mod4
 
+# environment variables
+set $script: exec --no-startup-id ~/.config/i3/scripts/
+set $path ~/.config/i3
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 #font monospace regular:monospace 8
@@ -114,16 +118,19 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # create new workspace
-bindsym $mod+Ctrl+Return exec --no-startup-id ~/.config/i3/scripts/empty_workspace.sh
+bindsym $mod+Shift+Return $script:empty_workspace.sh
 
 # reload the configuration file
 #bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Ctrl+r restart
 # lock the screen
-bindsym $mod+Shift+c exec --no-startup-id ~/.config/i3/scripts/lockscreen.sh
+bindsym $mod+Shift+c $script:lockscreen.sh
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# screenshot
+bindsym --release Print $script:screenshot.sh ~/Pictures/Screenshots
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -149,10 +156,21 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym $mod+Ctrl+r mode "resize"
+bindsym $mod+Shift+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+        status_command i3status -c ~/.config/i3/i3status.conf
 }
+
+# disable title bar for windows
+new_window pixel 3
+
+# on startup
+
+# set desktop background
+$script:background.sh $path/wallpapers calvin_hobbes01.jpg
+
+exec --no-startup-id nm-applet
+exec --no-startup-id xautolock -locker $path/scripts/lockscreen.sh
