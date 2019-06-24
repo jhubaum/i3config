@@ -128,7 +128,7 @@ bindsym $mod+Ctrl+r restart
 # lock the screen
 bindsym $mod+Shift+c $script:lockscreen.sh
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec i3-msg exit #"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # screenshot
 bindsym --release Print $script:screenshot.sh ~/Pictures/Screenshots
@@ -173,8 +173,9 @@ new_window pixel 3
 # on startup
 
 # set desktop background
-$script:background.sh $path/wallpapers calvin_hobbes01.jpg
+$script:background.sh $path/wallpapers amsterdam.jpg
 
 exec xcompmgr -c -f -n
 exec --no-startup-id nm-applet
+exec --no-startup-id nextcloud
 exec --no-startup-id xautolock -locker $path/scripts/lockscreen.sh
