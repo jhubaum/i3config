@@ -123,7 +123,7 @@ bindsym $mod+Shift+0 move container to workspace 10
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Ctrl+r restart
 # lock the screen
-bindsym $mod+Shift+c $script:lockscreen.sh
+bindsym $mod+Shift+c $script:exit.sh lock, mode "default"
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec i3-msg exit #"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
@@ -155,6 +155,23 @@ mode "resize" {
 }
 
 bindsym $mod+Shift+r mode "resize"
+
+# mode to power off, hibernate, etc.
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l $script:exit.sh lock, mode "default"
+    bindsym e $script:exit.sh logout, mode "default"
+    bindsym s $script:exit.sh suspend, mode "default"
+    bindsym h $script:exit.sh hibernate, mode "default"
+    bindsym r $script:exit.sh reboot, mode "default"
+    bindsym Shift+s $script:exit.sh shutdown, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Escape mode "$mode_system"
+
 workspace_auto_back_and_forth yes
 
 # Start i3bar to display a workspace bar (plus the system information i3status
